@@ -6,6 +6,7 @@ import Login from '../views/Login/Login';
 import Story from '../views/Story/Story';
 
 import BottomTab from './BottomTab';
+import Register from '../views/Register/Register';
 import EditProfile from './EditProfile';
 import MessageScreen from './MessageScreen';
 
@@ -30,6 +31,7 @@ const Router = () => {
           presentation: 'modal',
         }}
       />
+      <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   );
 };
