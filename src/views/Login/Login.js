@@ -5,17 +5,24 @@ import {TextInput} from 'react-native-paper';
 
 import Container from '../../components/Container/Container';
 import Content from '../../components/Content/Content';
+import Register from '../Register/Register';
 
 import styles from './Login.styles';
+import {useNavigation} from '@react-navigation/native';
 
 const trueEmail = 'E';
 const truePassword = '1';
 
 const Login = ({navigation}) => {
   const [passwordVisible, setPasswordVisible] = useState(true);
-
   const [name, setName] = useState(null);
   const [password, setPassword] = useState(null);
+  
+
+  const navigations = useNavigation();
+  const handleNavigateToRegister = () => {
+    navigations.navigate('Register');
+  };
   // const callApi = async () => {
   //   try {
   //     const data = await axios.post('http://localhost:3003/v1/user/login', {
@@ -108,7 +115,12 @@ const Login = ({navigation}) => {
                 <Text style={{fontSize: 12, color: 'grey'}}>
                   Bạn chưa có Tài Khoản?{' '}
                 </Text>
-                <Text style={styles.help}> Tạo tài khoản mới.</Text>
+                <Text
+                  style={styles.help}
+                  onPress={handleNavigateToRegister}
+                >
+                  Tạo tài khoản mới.
+                </Text>
               </View>
 
               <View style={styles.seperatorStyle}>
@@ -137,7 +149,7 @@ const Login = ({navigation}) => {
                 <Text style={{fontSize: 12, color: 'grey', marginTop: 15}}>
                   Chưa có tài khoản?{' '}
                 </Text>
-                <Text style={{...styles.help, marginTop: 15}}> Đăng ký.</Text>
+                <Text style={{...styles.help, marginTop: 15}}> Đăng ký. </Text>
               </View>
 
               <View style={styles.line} />
