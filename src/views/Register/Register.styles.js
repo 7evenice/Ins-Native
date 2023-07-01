@@ -8,7 +8,7 @@ export default StyleSheet.create({
   topContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: '35%',
+    height: '20%',
   },
   logo: {
     height: 40,
