@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
 import {Linking} from 'react-native';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
+import axios from 'axios';
+
 
 import Container from '../../components/Container/Container';
 import Content from '../../components/Content/Content';
@@ -12,20 +14,41 @@ import { validateInputs } from '../../utils/validateInput';
 import { useNavigation } from '@react-navigation/native';
 
 
-const trueEmail = 'E';
-const truePassword = '1';
 
-const Register = ({navigation}) => {
+const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [name, setName] = useState(null);
+  const [username, setUserName] = useState(null);
   const [password, setPassword] = useState(null);
   const [email, setEmail] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
-
+  
   const navigates = useNavigation();
   const handleNavigateToLogin = () => {
     navigates.navigate('Login');
   };
+  
+  const registerUser = async () => {
+    try {
+      const response = await axios
+        .post('http://localhost:8080/users/register', {
+          username,
+          name,
+          email,
+          password,
+        })
+        console.log('Request successful', response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleRegister = () => {
+    if (validateInputs(username, name, email, password, confirmPassword)) {
+      registerUser();
+    }
+  };
+  
   return (
     <Container insets={{top: true, bottom: true}}>
       <Content>
@@ -49,8 +72,19 @@ const Register = ({navigation}) => {
           <View style={styles.keyboardView}>
             <TextInput
               theme={{colors: {text: 'white'}}}
-              placeholder="Tên đăng nhập "
+              placeholder="Tên của bạn "
               onChangeText={item => setName(item)}
+              placeholderTextColor="grey"
+              selectionColor="grey"
+              style={styles.textInput}
+              activeOutlineColor="grey"
+              activeUnderlineColor="#3a3a3a"
+            />
+
+            <TextInput
+              theme={{colors: {text: 'white'}}}
+              placeholder="Tên đăng nhập "
+              onChangeText={item => setUserName(item)}
               placeholderTextColor="grey"
               selectionColor="grey"
               style={styles.textInput}
@@ -106,9 +140,7 @@ const Register = ({navigation}) => {
               }
             />
             <TouchableOpacity
-              onPress={() => {
-                validateInputs(name, email, password, confirmPassword);
-              }}
+              onPress={handleRegister}
               style={styles.login}
               // disabled={name === null && password === null ? true : false}>
             >
@@ -120,9 +152,7 @@ const Register = ({navigation}) => {
                 <Text style={{fontSize: 12, color: 'grey'}}>
                   Bạn đã có Tài Khoản?{' '}
                 </Text>
-                <Text
-                  style={styles.help}
-                  onPress={() => handleNavigateToLogin()}>
+                <Text style={styles.help} onPress={handleNavigateToLogin}>
                   {' '}
                   Trở về đăng nhập
                 </Text>
